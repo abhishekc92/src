@@ -48,10 +48,12 @@ public class NScan extends Scan {
             IOException, FieldNumberOutOfBoundException {
         RID record = new RID(nid.pageNo, nid.slotNo);
         Tuple tuple = super.getNext(record);
+        nid.pageNo.pid = record.pageNo.pid;
+        nid.slotNo = record.slotNo;
         if (tuple != null) {
             Node newNode = new Node(tuple.data, 0);
-            Descriptor descriptor = Convert.getDescValue(Node.MAX_SIZE + 2, tuple.data);
-            String label = Convert.getStrValue(0, tuple.data, Node.MAX_SIZE + 2);
+            Descriptor descriptor = Convert.getDescValue(10, tuple.data);
+            String label = Convert.getStrValue(0, tuple.data, 10);
             newNode.setDesc(descriptor);
             newNode.setLabel(label);
             return newNode;
